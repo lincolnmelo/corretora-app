@@ -11,10 +11,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primaryColor: const Color(0xFF012c5e),
             accentColor: const Color(0xFFc29109)),
-        home: new Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: LoginPage(),
-        ));
+        home: LoginPage());
   }
 }

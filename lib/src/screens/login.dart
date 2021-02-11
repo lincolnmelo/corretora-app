@@ -1,9 +1,22 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool isLoading = false;
   final _tLogin = TextEditingController();
   final _tSenha = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  _oneTap() {
+    setState(() {
+      isLoading = !isLoading;
+      _onClickLogin(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +28,7 @@ class LoginPage extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: Padding(
+        child: Container(
           padding: EdgeInsets.all(20.0),
           child: _body(context),
         ),
@@ -45,22 +58,22 @@ class LoginPage extends StatelessWidget {
             logoContent(),
             textFormFieldLogin(),
             textFormFieldSenha(),
-            containerButton(context)
+            changeButton()
           ],
         ));
   }
 
-  Container logoContent() {
+  Widget logoContent() {
     return Container(
         child: new Image.asset(
-          "lib/assets/images/alfaFinanceira.png",
-          width: 200,
+          "lib/assets/images/alfa-corretora.png",
+          width: 300,
         ),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 50));
+        padding: EdgeInsets.only(top: 75, bottom: 50));
   }
 
-  Container textFormFieldLogin() {
+  Widget textFormFieldLogin() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
@@ -76,7 +89,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Container textFormFieldSenha() {
+  Widget textFormFieldSenha() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: TextFormField(
@@ -93,36 +106,49 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Container containerButton(BuildContext context) {
+  Widget changeButton() {
+    return isLoading ? circularButton() : defButton();
+  }
+
+  Widget defButton() {
     return Container(
-      padding: EdgeInsets.only(top: 50),
-      child: RawMaterialButton(
-        fillColor: const Color(0xFFc29109),
-        splashColor: Theme.of(context).primaryColor,
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: const <Widget>[
-              Icon(
-                Icons.login,
-                color: Colors.white,
-              ),
-              SizedBox(
-                width: 10.0,
-              ),
-              Text(
-                "Login",
-                maxLines: 1,
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-        onPressed: () {
-          _onClickLogin(context);
-        },
-        shape: const StadiumBorder(),
+      padding: EdgeInsets.only(top: 75),
+      child: GestureDetector(
+          onTap: _oneTap,
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.circular(10)),
+              width: 50,
+              height: 50,
+              alignment: Alignment.center,
+              child: Text(
+                'Login',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 20),
+              ))),
+    );
+  }
+
+  Widget circularButton() {
+    return Container(
+      padding: EdgeInsets.only(top: 75),
+      child: GestureDetector(
+        onTap: _oneTap,
+        child: Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                borderRadius: BorderRadius.circular(40)),
+            width: 50,
+            height: 50,
+            alignment: Alignment.center,
+            child: Center(
+              child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+            )),
       ),
     );
   }
