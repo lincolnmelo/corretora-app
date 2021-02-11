@@ -1,4 +1,4 @@
-import 'package:corretoraApp/src/screens/login.dart';
+import 'package:corretora_app/src/screens/login.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

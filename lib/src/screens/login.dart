@@ -114,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget defButton() {
     return Container(
+      padding: EdgeInsets.only(top: 20),
       child: GestureDetector(
           onTap: _oneTap,
           child: Container(
@@ -140,7 +141,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget circularButton() {
-    return Container(
+    return new Container(
+      padding: isLoading
+          ? EdgeInsets.only(top: 20, right: 151, left: 151)
+          : EdgeInsets.only(top: 20),
       child: GestureDetector(
         onTap: _oneTap,
         child: Container(
@@ -172,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
               title: Text("Erro"),
               content: Text("Login e/ou Senha inválido(s)"),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text("OK"),
                     onPressed: () {
                       Navigator.pop(context);
