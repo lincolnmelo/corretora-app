@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:corretora_app/src/components/input_text.dart';
 
@@ -13,6 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   _oneTap() {
+    FocusScope.of(context).unfocus();
     setState(() {
       isLoading = !isLoading;
       _onClickLogin(context);
@@ -34,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[logoContent(), _body(), changeButton()],
+            children: <Widget>[logoContent(), _body(), loginButton()],
           ),
         ),
       ),
@@ -53,94 +55,107 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget logoContent() {
-    return Container(
+    return AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeIn,
+        width: isLoading ? 250 : MediaQuery.of(context).size.width,
+        transform: isLoading
+            ? Matrix4.translationValues(
+                0.0, MediaQuery.of(context).size.height / 6, 0.0)
+            : Matrix4.translationValues(0.0, 0.0, 0.0),
         child: new Image.asset(
           "lib/assets/images/alfa-corretora.png",
           width: 300,
         ),
         alignment: Alignment.center,
-        padding: EdgeInsets.only(top: 75, bottom: 50));
+        padding: EdgeInsets.only(top: 100, bottom: 50));
   }
 
   Widget textFormFieldLogin() {
     String message = 'Informe seu e-mail';
-    return Container(
-      padding: EdgeInsets.all(20.0),
-      child: TextInput(
-        controller: _tLogin,
-        returnMessage: message,
-        hintText: 'Informe o e-mail',
-        labelText: 'Login',
-        textMessage: message,
-      ),
-    );
+    return _inputAnimation(
+        TextInput(
+          controller: _tLogin,
+          returnMessage: message,
+          hintText: 'Informe o e-mail',
+          labelText: 'Login',
+          textMessage: message,
+        ),
+        MediaQuery.of(context).size.width);
   }
 
   Widget textFormFieldSenha() {
     String message = 'Informe sua senha';
-    return Container(
-      padding: EdgeInsets.all(20.0),
-      child: TextInput(
-        controller: _tSenha,
-        returnMessage: message,
-        hintText: 'Informe a senha',
-        labelText: 'Senha',
-        textMessage: message,
-      ),
-    );
+    return _inputAnimation(
+        TextInput(
+          controller: _tSenha,
+          returnMessage: message,
+          hintText: 'Informe a senha',
+          labelText: 'Senha',
+          textMessage: message,
+        ),
+        -MediaQuery.of(context).size.width);
   }
 
-  Widget changeButton() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 45, horizontal: 20),
-      child: isLoading ? circularButton() : defButton(),
-    );
+  _inputAnimation(Widget container, double direction) {
+    return AnimatedContainer(
+        duration: Duration(milliseconds: 400),
+        curve: Curves.easeIn,
+        transform: isLoading
+            ? Matrix4.translationValues(direction, 0.0, 0.0)
+            : Matrix4.translationValues(0.0, 0.0, 0.0),
+        padding: EdgeInsets.all(20.0),
+        child: container);
   }
 
-  Widget defButton() {
-    return Container(
-      padding: EdgeInsets.only(top: 20),
-      child: GestureDetector(
-          onTap: _oneTap,
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        offset: Offset(2.0, 3.0),
-                        blurRadius: 5.0)
-                  ]),
-              height: 50,
-              alignment: Alignment.center,
-              child: Text(
-                'Login',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 20),
-              ))),
-    );
-  }
+  Widget loginButton() {
+    var _boxshadow = <BoxShadow>[
+      BoxShadow(
+          color: Colors.black.withOpacity(0.5),
+          offset: Offset(2.0, 3.0),
+          blurRadius: 5.0)
+    ];
 
-  Widget circularButton() {
     return new Container(
-      padding: EdgeInsets.only(top: 20),
-      width: 50,
-      child: GestureDetector(
-        onTap: _oneTap,
-        child: Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.circular(40)),
-            height: 50,
-            alignment: Alignment.center,
-            child: Center(
-              child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
-            )),
+      padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeIn,
+        width: isLoading ? 50 : MediaQuery.of(context).size.width,
+        transform: isLoading
+            ? Matrix4.translationValues(
+                0.0, -MediaQuery.of(context).size.height / 6, 0.0)
+            : Matrix4.translationValues(0.0, 0.0, 0.0),
+        child: GestureDetector(
+            onTap: _oneTap,
+            child: isLoading
+                ? Container(
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(50),
+                        boxShadow: _boxshadow),
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white)),
+                    ))
+                : Container(
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(50),
+                        boxShadow: _boxshadow),
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Login',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20),
+                    ))),
       ),
     );
   }
@@ -150,9 +165,15 @@ class _LoginPageState extends State<LoginPage> {
     final senha = _tSenha.text;
     print("Login: $login , Senha: $senha ");
     if (!_formKey.currentState.validate()) {
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
     if (login != 'teste' || senha != 'teste') {
+      setState(() {
+        isLoading = false;
+      });
       showDialog(
         context: context,
         builder: (context) {
@@ -183,6 +204,16 @@ class _LoginPageState extends State<LoginPage> {
               ]);
         },
       );
+    } else {
+      setState(() {
+        isLoading = true;
+      });
+      FocusScope.of(context).unfocus();
+      Timer(
+          Duration(seconds: 8),
+          () => setState(() {
+                isLoading = false;
+              }));
     }
   }
 }
