@@ -28,9 +28,10 @@ class _LoginPageState extends State<LoginPage> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Container(
-          padding: EdgeInsets.all(20.0),
-          child: _body(context),
+        width: double.infinity,
+        height: double.infinity,
+        child: ListView(
+          children: [logoContent(), _body(), changeButton()],
         ),
       ),
     );
@@ -50,15 +51,13 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
-  _body(BuildContext context) {
+  _body() {
     return Form(
         key: _formKey,
-        child: ListView(
+        child: Column(
           children: <Widget>[
-            logoContent(),
             textFormFieldLogin(),
             textFormFieldSenha(),
-            changeButton()
           ],
         ));
   }
@@ -75,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget textFormFieldLogin() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.all(20.0),
       child: TextFormField(
           controller: _tLogin,
           validator: _validateLogin,
@@ -91,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget textFormFieldSenha() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.all(20.0),
       child: TextFormField(
           controller: _tSenha,
           validator: _validateSenha,
@@ -107,19 +106,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget changeButton() {
-    return isLoading ? circularButton() : defButton();
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 45, horizontal: 20),
+      child: isLoading ? circularButton() : defButton(),
+    );
   }
 
   Widget defButton() {
     return Container(
-      padding: EdgeInsets.only(top: 75),
       child: GestureDetector(
           onTap: _oneTap,
           child: Container(
               decoration: BoxDecoration(
                   color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.circular(10)),
-              width: 50,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        offset: Offset(2.0, 3.0),
+                        blurRadius: 5.0)
+                  ]),
               height: 50,
               alignment: Alignment.center,
               child: Text(
@@ -135,14 +141,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget circularButton() {
     return Container(
-      padding: EdgeInsets.only(top: 75),
       child: GestureDetector(
         onTap: _oneTap,
         child: Container(
             decoration: BoxDecoration(
                 color: Theme.of(context).accentColor,
                 borderRadius: BorderRadius.circular(40)),
-            width: 50,
             height: 50,
             alignment: Alignment.center,
             child: Center(
