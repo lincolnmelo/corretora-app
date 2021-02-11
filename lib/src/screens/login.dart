@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:corretora_app/src/components/input_text.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,33 +23,22 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("lib/assets/images/home.png"),
             fit: BoxFit.cover,
           ),
         ),
-        width: double.infinity,
-        height: double.infinity,
-        child: ListView(
-          children: [logoContent(), _body(), changeButton()],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[logoContent(), _body(), changeButton()],
+          ),
         ),
       ),
     );
-  }
-
-  String _validateLogin(String text) {
-    if (text.isEmpty) {
-      return "Informe o login";
-    }
-    return null;
-  }
-
-  String _validateSenha(String text) {
-    if (text.isEmpty) {
-      return "Informe a senha";
-    }
-    return null;
   }
 
   _body() {
@@ -73,35 +63,30 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget textFormFieldLogin() {
+    String message = 'Informe seu e-mail';
     return Container(
       padding: EdgeInsets.all(20.0),
-      child: TextFormField(
-          controller: _tLogin,
-          validator: _validateLogin,
-          keyboardType: TextInputType.text,
-          style: TextStyle(color: Colors.black),
-          decoration: InputDecoration(
-              labelText: "Login",
-              labelStyle:
-                  TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              hintText: "Informe seu e-mail")),
+      child: TextInput(
+        controller: _tLogin,
+        returnMessage: message,
+        hintText: 'Informe o e-mail',
+        labelText: 'Login',
+        textMessage: message,
+      ),
     );
   }
 
   Widget textFormFieldSenha() {
+    String message = 'Informe sua senha';
     return Container(
       padding: EdgeInsets.all(20.0),
-      child: TextFormField(
-          controller: _tSenha,
-          validator: _validateSenha,
-          obscureText: true,
-          keyboardType: TextInputType.text,
-          style: TextStyle(color: Colors.black),
-          decoration: InputDecoration(
-              labelText: "Senha",
-              labelStyle:
-                  TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              hintText: "Informe a senha")),
+      child: TextInput(
+        controller: _tSenha,
+        returnMessage: message,
+        hintText: 'Informe a senha',
+        labelText: 'Senha',
+        textMessage: message,
+      ),
     );
   }
 
@@ -142,9 +127,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget circularButton() {
     return new Container(
-      padding: isLoading
-          ? EdgeInsets.only(top: 20, right: 151, left: 151)
-          : EdgeInsets.only(top: 20),
+      padding: EdgeInsets.only(top: 20),
+      width: 50,
       child: GestureDetector(
         onTap: _oneTap,
         child: Container(
@@ -168,17 +152,32 @@ class _LoginPageState extends State<LoginPage> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    if (login.isEmpty || senha.isEmpty) {
+    if (login != 'teste' || senha != 'teste') {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-              title: Text("Erro"),
-              content: Text("Login e/ou Senha inválido(s)"),
+              title: Text(
+                "Atenção",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).accentColor,
+                    fontSize: 20),
+              ),
+              content: Text("Login e/ou Senha inválido(s)."),
               actions: <Widget>[
                 TextButton(
-                    child: Text("OK"),
+                    child: Text(
+                      "OK",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).accentColor,
+                          fontSize: 20),
+                    ),
                     onPressed: () {
+                      setState(() {
+                        isLoading = false;
+                      });
                       Navigator.pop(context);
                     })
               ]);
