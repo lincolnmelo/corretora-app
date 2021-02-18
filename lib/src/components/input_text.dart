@@ -7,13 +7,15 @@ class TextInput extends StatefulWidget {
       this.textMessage,
       this.returnMessage,
       this.labelText,
-      this.hintText})
+      this.hintText,
+      this.obscuringCharacter})
       : super(key: key);
   final TextEditingController controller;
   final String textMessage;
   final String returnMessage;
   final String labelText;
   final String hintText;
+  final bool obscuringCharacter;
 
   @override
   _TextInputState createState() => _TextInputState();
@@ -30,6 +32,7 @@ class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+        obscureText: widget.obscuringCharacter,
         controller: widget.controller,
         validator: _textValidator,
         keyboardType: TextInputType.text,

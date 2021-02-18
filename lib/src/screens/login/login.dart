@@ -9,9 +9,19 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
+  bool starting = false;
   final _tLogin = TextEditingController();
   final _tSenha = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      starting = true;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _setState());
+  }
 
   _oneTap() {
     FocusScope.of(context).unfocus();
@@ -34,9 +44,13 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[logoContent(), _body(), loginButton()],
+          child: AnimatedOpacity(
+            duration: Duration(milliseconds: 500),
+            opacity: starting ? 0.0 : 1.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[logoContent(), _body(), loginButton()],
+            ),
           ),
         ),
       ),
@@ -75,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
     String message = 'Informe seu e-mail';
     return _inputAnimation(
         TextInput(
+          obscuringCharacter: false,
           controller: _tLogin,
           returnMessage: message,
           hintText: 'Informe o e-mail',
@@ -88,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
     String message = 'Informe sua senha';
     return _inputAnimation(
         TextInput(
+          obscuringCharacter: true,
           controller: _tSenha,
           returnMessage: message,
           hintText: 'Informe a senha',
@@ -215,5 +231,11 @@ class _LoginPageState extends State<LoginPage> {
                 isLoading = false;
               }));
     }
+  }
+
+  _setState() {
+    setState(() {
+      starting = false;
+    });
   }
 }
