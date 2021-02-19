@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:corretora_app/src/components/input_text.dart';
+import 'package:corretora_app/src/screens/login/token.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -142,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
             ? Matrix4.translationValues(
                 0.0, -MediaQuery.of(context).size.height / 6, 0.0)
             : Matrix4.translationValues(0.0, 0.0, 0.0),
-        child: GestureDetector(
+        child: InkWell(
             onTap: _oneTap,
             child: isLoading
                 ? Container(
@@ -191,6 +192,7 @@ class _LoginPageState extends State<LoginPage> {
         isLoading = false;
       });
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           return AlertDialog(
@@ -226,9 +228,10 @@ class _LoginPageState extends State<LoginPage> {
       });
       FocusScope.of(context).unfocus();
       Timer(
-          Duration(seconds: 8),
+          Duration(seconds: 4),
           () => setState(() {
                 isLoading = false;
+                Navigator.pushNamed(context, '/login/token');
               }));
     }
   }

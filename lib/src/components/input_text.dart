@@ -32,6 +32,9 @@ class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+        onFieldSubmitted: (_) async {
+          print("Enter");
+        },
         obscureText: widget.obscuringCharacter,
         controller: widget.controller,
         validator: _textValidator,

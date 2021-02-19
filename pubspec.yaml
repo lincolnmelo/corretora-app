@@ -22,7 +22,12 @@ flutter:
   assets:
     - lib/assets/images/alfa-corretora-branco.png
     - lib/assets/images/alfa-corretora.png
+    - lib/assets/images/alfa-corretora-crop-content.png
     - lib/assets/images/home.png
+    - lib/assets/images/logo-branco.png
+    - lib/assets/images/logo-black.png
+    - lib/assets/images/avatar.png
+    - lib/assets/images/drawer.png
 
 flutter_icons:
   android: "launcher_icon"
