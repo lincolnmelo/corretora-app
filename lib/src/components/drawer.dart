@@ -13,7 +13,12 @@ class _DrawerComponentState extends State<DrawerComponent> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Column(
-        children: <Widget>[infoPerson(), divider(), infoBottom()],
+        children: <Widget>[
+          infoPerson(),
+          divider(8, 0, Theme.of(context).accentColor),
+          listView(),
+          infoBottom()
+        ],
       ),
     ));
   }
@@ -59,13 +64,44 @@ class _DrawerComponentState extends State<DrawerComponent> {
     );
   }
 
-  Widget divider() {
+  Widget listView() {
+    var color = Colors.grey[600];
+    return Column(
+      children: [
+        listTile(Icon(Icons.graphic_eq), Text("Home Dashboard"), '/home'),
+        divider(0.5, 80, color),
+        listTile(
+            Icon(Icons.trending_up), Text("Investimento"), '/investimento'),
+        divider(0.5, 80, color),
+        listTile(
+            Icon(Icons.account_circle), Text("Minha conta"), '/minhaconta'),
+        divider(0.5, 80, color)
+      ],
+    );
+  }
+
+  Widget divider(double _thickness, double _endIndent, Color _color) {
     return Divider(
-      color: Theme.of(context).accentColor,
+      color: _color,
       height: 0,
-      thickness: 8,
+      thickness: _thickness,
       indent: 0,
-      endIndent: 0,
+      endIndent: _endIndent,
+    );
+  }
+
+  Widget listTile(Icon incon, Text text, String route) {
+    return InkWell(
+      onTap: () {
+        print("Click Navigation");
+        Navigator.of(context).pop();
+        Navigator.pushNamed(context, route);
+      },
+      splashColor: Theme.of(context).primaryColor,
+      child: ListTile(
+        leading: incon,
+        title: text,
+      ),
     );
   }
 }

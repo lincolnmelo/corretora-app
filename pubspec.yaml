@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.0
   progress_state_button: "^1.0.2"
+  graphic: ^0.3.0
+  percent_indicator: ^2.1.9+1
 
 dev_dependencies:
   flutter_test:
