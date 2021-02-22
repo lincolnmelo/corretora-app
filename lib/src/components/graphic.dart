@@ -4,7 +4,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 import 'data.dart';
 
-class IntervalPage extends StatelessWidget {
+class GraphicsComponent extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class DrawerComponent extends StatefulWidget {
@@ -50,14 +52,90 @@ class _DrawerComponentState extends State<DrawerComponent> {
       child: Align(
         alignment: Alignment.bottomRight,
         child: Container(
-            height: 50,
-            width: 80,
-            padding: EdgeInsets.all(5),
+            height: 60,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.all(10),
             child: Align(
               alignment: Alignment.center,
-              child: Image(
-                image: AssetImage(
-                    "lib/assets/images/alfa-corretora-crop-content.png"),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        onTap: () {
+                          print("Teste");
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                  title: Text(
+                                    "Atenção",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).accentColor,
+                                        fontSize: 20),
+                                  ),
+                                  content: Text("Deseja sair do App?"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                        child: Text(
+                                          "Não",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              fontSize: 20),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                    TextButton(
+                                        child: Text(
+                                          "Sim",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              fontSize: 20),
+                                        ),
+                                        onPressed: () {
+                                          exit(0);
+                                        })
+                                  ]);
+                            },
+                          );
+                        },
+                        splashColor: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              Icons.logout,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            Text('Sair',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Image(
+                        width: 80,
+                        image: AssetImage(
+                            "lib/assets/images/alfa-corretora-crop-content.png"),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )),
       ),

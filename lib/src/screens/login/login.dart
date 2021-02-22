@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:corretora_app/src/components/input_text.dart';
-import 'package:corretora_app/src/screens/login/token.dart';
 
 class LoginPage extends StatefulWidget {
   @override

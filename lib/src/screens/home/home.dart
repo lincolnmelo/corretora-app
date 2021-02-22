@@ -21,6 +21,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget graphic() {
-    return IntervalPage();
+    return GraphicsComponent();
   }
 }
